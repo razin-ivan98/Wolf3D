@@ -6,11 +6,11 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <stdio.h>
-# include "libft.h" 
-# include "get_next_line.h" 
+# include "libft/libft.h"
+# include "get_next_line/get_next_line.h"
 
-# define CW 640
-# define CH  480
+# define CW 1280
+# define CH  720
 # define TEX_SIZE 32
 # define FOV M_PI/3
 # define FOV_DIV_2 FOV / 2

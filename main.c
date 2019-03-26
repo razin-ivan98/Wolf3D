@@ -1,32 +1,37 @@
 #include "wolf3d.h"
-
+/*
 void cast_x(t_wolf3d *wolf3d)
 {
 	float new_x;
 	float new_y;
 	float distance;
 
+	new_x = floor(wolf3d->player.pos_x);
+	new_y = wolf3d->player.pos_y + (new_x - wolf3d->player.pos_x) * wolf3d->curr_cast.tan_a;
 	if (wolf3d->curr_cast.cos_a > 0)
 	{
-		new_x = (int)wolf3d->player.pos_x;
-		new_y = new_x * wolf3d->curr_cast.tan_a;
-		while (!(wolf3d->curr_cast.type = get_tile(new_x + 0.1, new_y, wolf3d)) && new_x < wolf3d->cols)
+
+		while (new_y > 0.0 && new_y < wolf3d->rows && new_x < wolf3d->cols)
 		{
+			puts("1");
+			if ((wolf3d->curr_cast.type = get_tile(new_x + 0.1, new_y, wolf3d)))
+				break ;
 			new_x += 1.0;
-			new_y = new_x * wolf3d->curr_cast.tan_a;
+			new_y = new_y + wolf3d->curr_cast.tan_a;
 		}
 		distance = sqrt((new_x - wolf3d->player.pos_x) * (new_x - wolf3d->player.pos_x) + (new_y - wolf3d->player.pos_y)*(new_y - wolf3d->player.pos_y)) ;
 	}
 	else
 	{
-		new_x = (int)wolf3d->player.pos_x + 1.0;
-		new_y = new_x * wolf3d->curr_cast.tan_a;
-		while (!(wolf3d->curr_cast.type = get_tile(new_x - 0.1, new_y, wolf3d)) && new_x > 0.0)
+		while (new_y > 0.0 && new_y < wolf3d->rows && new_x > 0.0)
 		{
+			puts("2");
+			if ((wolf3d->curr_cast.type = get_tile(new_x - 0.1, new_y, wolf3d)))
+				break ;
 			new_x -= 1.0;
-			new_y = new_x * wolf3d->curr_cast.tan_a;
+			new_y = new_y + wolf3d->curr_cast.tan_a;
 		}
-		distance = sqrt((new_x - wolf3d->player.pos_x) * (new_x - wolf3d->player.pos_x) + (new_y - wolf3d->player.pos_y)*(new_y - wolf3d->player.pos_y)) ;
+		distance = sqrt(((double)new_x - wolf3d->player.pos_x) * ((double)new_x - wolf3d->player.pos_x) + ((double)new_y - wolf3d->player.pos_y)*((double)new_y - wolf3d->player.pos_y));
 	}
 
 	wolf3d->curr_cast.intersect_x = new_x;
@@ -40,27 +45,32 @@ void cast_y(t_wolf3d *wolf3d)
 	float new_y;
 	float distance;
 
+
+	new_y = floor(wolf3d->player.pos_y);
+	new_x = wolf3d->player.pos_x + (new_y - wolf3d->player.pos_y) / wolf3d->curr_cast.tan_a;
 	if (wolf3d->curr_cast.sin_a > 0)
 	{
-		new_y = (int)wolf3d->player.pos_y;
-		new_x = new_y / wolf3d->curr_cast.tan_a;
-		while (!(wolf3d->curr_cast.type = get_tile(new_y + 0.1, new_y, wolf3d)) && new_y < wolf3d->rows)
+		while (new_x > 0.0 && new_x < wolf3d->cols &&  new_y < wolf3d->rows)
 		{
+			puts("3");
+			if ((wolf3d->curr_cast.type = get_tile(new_x, new_y + 0.1, wolf3d)))
+				break ;
 			new_y += 1.0;
-			new_x = new_y / wolf3d->curr_cast.tan_a;
+			new_x = new_x + 1 / wolf3d->curr_cast.tan_a;
 		}
 		distance = sqrt((new_x - wolf3d->player.pos_x) * (new_x - wolf3d->player.pos_x) + (new_y - wolf3d->player.pos_y)*(new_y - wolf3d->player.pos_y)) ;
 	}
 	else
 	{
-		new_y = (int)wolf3d->player.pos_y + 1.0;
-		new_x = new_y / wolf3d->curr_cast.tan_a;
-		while (!(wolf3d->curr_cast.type = get_tile(new_y - 0.1, new_y, wolf3d)) && new_y > 0.0)
+		while (new_x > 0.0 && new_x < wolf3d->cols && new_y > 0.0)
 		{
+			puts("4");
+			if ((wolf3d->curr_cast.type = get_tile(new_x, new_y - 0.1, wolf3d)))
+				break ;
 			new_y -= 1.0;
-			new_x = new_y / wolf3d->curr_cast.tan_a;
+			new_x = new_x + 1 / wolf3d->curr_cast.tan_a;
 		}
-		distance = sqrt((new_x - wolf3d->player.pos_x) * (new_x - wolf3d->player.pos_x) + (new_y - wolf3d->player.pos_y)*(new_y - wolf3d->player.pos_y)) ;
+		distance = sqrt(((double)new_x - wolf3d->player.pos_x) * ((double)new_x - wolf3d->player.pos_x) + ((double)new_y - wolf3d->player.pos_y)*((double)new_y - wolf3d->player.pos_y));
 	}
 
 	if (distance < wolf3d->curr_cast.distance)
@@ -71,7 +81,7 @@ void cast_y(t_wolf3d *wolf3d)
 	}
 
 }
-
+*/
 void cast(t_wolf3d *wolf3d)
 {
 	//float dist_x;
@@ -83,15 +93,15 @@ void cast(t_wolf3d *wolf3d)
 	float dist_x;
 	float dist_y;
 	*/
-	if (wolf3d->curr_cast.cos_a != 0)
+/*	if (wolf3d->curr_cast.cos_a != 0)
 		cast_x(wolf3d);
 	if (wolf3d->curr_cast.sin_a != 0)
-		cast_y(wolf3d);
+		cast_y(wolf3d);*/
 
 	//wolf3d->curr_cast.distance = dist_x < dist_y ? dist_x : dist_y;
 
 
-/*
+
 
 	float sin_a = sin(wolf3d->curr_cast.angle);
 	float cos_a = cos(wolf3d->curr_cast.angle);
@@ -99,7 +109,7 @@ void cast(t_wolf3d *wolf3d)
 	wolf3d->curr_cast.intersect_x = wolf3d->player.pos_x;
 	wolf3d->curr_cast.intersect_y = wolf3d->player.pos_y;
 	wolf3d->curr_cast.distance = 0.0;
-	
+
 
 	while (!(wolf3d->curr_cast.type = get_tile(wolf3d->curr_cast.intersect_x, wolf3d->curr_cast.intersect_y, wolf3d)))
 	{
@@ -110,7 +120,7 @@ void cast(t_wolf3d *wolf3d)
 
 
 
-	*/
+
 }
 
 void draw(t_wolf3d *wolf3d, int x, int wall, int col)
@@ -165,7 +175,7 @@ void draw(t_wolf3d *wolf3d, int x, int wall, int col)
 			put_point_to_image(wolf3d->image_data, x, y, calculate_light(get_rgb_from_texture(col, row, wolf3d->textures[wolf3d->curr_cast.compas].image_data), wolf3d->curr_cast.distance));
 		}
 	}
-} 
+}
 
 void provider(t_wolf3d *wolf3d)
 {
@@ -182,7 +192,6 @@ void provider(t_wolf3d *wolf3d)
 
 
 		cast(wolf3d);
-		
 		wall =  CW / wolf3d->curr_cast.distance / cos(wolf3d->curr_cast.angle - wolf3d->player.angle);
 
 		if (!(get_tile(wolf3d->curr_cast.intersect_x + 0.01, wolf3d->curr_cast.intersect_y, wolf3d)) && cos(wolf3d->curr_cast.angle) < 0)
@@ -200,13 +209,13 @@ void provider(t_wolf3d *wolf3d)
 			col = (int)((wolf3d->curr_cast.intersect_x - (int)(wolf3d->curr_cast.intersect_x)) * 32);
 			wolf3d->curr_cast.compas = north;
 		}
-		else 
+		else
 		{
 			col = (int)((wolf3d->curr_cast.intersect_x - (int)(wolf3d->curr_cast.intersect_x)) * 32);
 			wolf3d->curr_cast.compas = south;
 		}
 		draw(wolf3d, x, wall, col);
-	}	
+	}
 	mlx_put_image_to_window(wolf3d->mlx_ptr, wolf3d->win_ptr, wolf3d->image, 0, 0);
 }
 

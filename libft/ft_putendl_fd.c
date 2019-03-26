@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/10 06:28:29 by chorange          #+#    #+#             */
-/*   Updated: 2019/03/24 20:23:27 by chorange         ###   ########.fr       */
+/*   Created: 2018/11/28 20:02:26 by chorange          #+#    #+#             */
+/*   Updated: 2018/11/28 20:02:27 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
+#include <unistd.h>
 
-# include <unistd.h>
-# include <stdlib.h>
-
-# define BUFF_SIZE 1024
-
-# define MALLCHECK(x) if (!(x)) return (-1);
-# define ERRCHECK(x, y, z) if ((x) < 0 || (y) == NULL || (z) < 0) return (-1);
-
-typedef struct		s_file
+void	ft_putendl_fd(char const *s, int fd)
 {
-	char			reserv[BUFF_SIZE + 1];
-	int				fd;
-	struct s_file	*next;
-}					t_file;
-
-int					get_next_line(int fd, char **line);
-
-#endif
+	if (s == NULL)
+		return ;
+	write(fd, s, ft_strlen(s));
+	write(fd, "\n", 1);
+}
