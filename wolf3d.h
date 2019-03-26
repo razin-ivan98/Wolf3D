@@ -5,7 +5,9 @@
 # include <math.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <stdio.h>
 # include "libft.h" 
+# include "get_next_line.h" 
 
 # define CW 640
 # define CH  480
@@ -52,7 +54,12 @@ typedef struct s_ray_cast
 	float intersect_x;
 	float intersect_y;
 	float angle;
+	float sin_a;
+	float cos_a;
+	float tan_a;
 	float distance;
+	int type;
+	int compas;
 }				t_ray_cast;
 
 typedef struct s_player
@@ -77,7 +84,7 @@ typedef struct s_wolf3d
 	int cols;
 	int rows;
 
-	//t_ray_cast curr_cast;
+	t_ray_cast curr_cast;
 	//t_wall_col curr_col;
 }				t_wolf3d;
 
@@ -94,16 +101,18 @@ void read_map_from_file(t_wolf3d *wolf3d, char *file_name);
 
 void provider(t_wolf3d *wolf3d);
 
-void	put_point_to_image(char *image_data, int x, int y, int color);
+void	put_point_to_image(char *image_data, int x, int y, t_rgb rgb);
 
 t_rgb get_rgb_from_texture(int col, int row, char *image_data);
 t_rgb calculate_light(t_rgb rbg, float distance);
 
-int key_pressed(int key, void *param);
+int key_pressed(int key, t_wolf3d *wolf3d);
 
 int get_tile(float x, float y, t_wolf3d *wolf3d);
 
 t_rgb color_to_rgb(int color);
 int rgb_to_color(t_rgb rgb);
+
+void err_exit(void);
 
 #endif

@@ -4,9 +4,13 @@ t_rgb calculate_light(t_rgb rgb, float distance)
 {
 	t_rgb ret;
 
-	ret.r = (rgb.r < 0 ? 255 + rgb.r : rgb.r) * (1 - 0.1 * distance);
-	ret.g = (rgb.g < 0 ? 255 + rgb.g : rgb.g) * (1 - 0.1 * distance);
-	ret.b = (rgb.b < 0 ? 255 + rgb.b : rgb.b) * (1 - 0.1 * distance);
+	float delta;
+
+	delta = 1 - 0.1 * distance;
+
+	ret.r = (rgb.r < 0 ? 255 + rgb.r : rgb.r) * delta;
+	ret.g = (rgb.g < 0 ? 255 + rgb.g : rgb.g) * delta;
+	ret.b = (rgb.b < 0 ? 255 + rgb.b : rgb.b) * delta;
 
 	if (ret.r < 0)
 		ret.r = 0;

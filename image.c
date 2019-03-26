@@ -1,6 +1,6 @@
 #include "wolf3d.h"
 
-void	put_point_to_image(char *image_data, int x, int y, int color)
+void	put_point_to_image(char *image_data, int x, int y, t_rgb rgb)
 {
 	int	index = 0;
 
@@ -9,8 +9,8 @@ void	put_point_to_image(char *image_data, int x, int y, int color)
 	else
 	{
 		index = CW * y * 4 + x * 4;
-		image_data[index + 2] = color >> 16;
-		image_data[index + 1] = (color & 0x00ff00) >> 8;
-		image_data[index] = color & 0x0000ff;
+		image_data[index + 2] = rgb.r;
+		image_data[index + 1] = rgb.g;
+		image_data[index] = rgb.b;
 	}
 }

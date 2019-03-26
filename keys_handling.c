@@ -1,10 +1,10 @@
 #include "wolf3d.h"
 
-int key_pressed(int key, void *param)
+int key_pressed(int key, t_wolf3d *wolf3d)
 {
-	t_wolf3d *wolf3d;
+	//t_wolf3d *wolf3d;
 
-	wolf3d = (t_wolf3d *)param;
+	//wolf3d = (t_wolf3d *)param;
 
 	if (key == 0xff1b)
 	{
