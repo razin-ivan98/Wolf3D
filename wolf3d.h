@@ -10,8 +10,8 @@
 # include <pthread.h>
 # include "get_next_line/get_next_line.h"
 
-# define CW 1280
-# define CH  720
+# define CW 640
+# define CH  480
 # define TEX_SIZE 32
 # define FOV M_PI/3
 # define FOV_DIV_2 FOV / 2
@@ -23,6 +23,13 @@ typedef struct s_texture
 	int len;
 }				t_texture;
 
+typedef struct s_door
+{
+	char file_name[56];
+	float pos_x;
+	float pos_y;
+	float angle;
+}				t_door
 
 typedef enum
 {

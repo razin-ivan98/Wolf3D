@@ -1,4 +1,4 @@
-#include "Wolf3d.h"
+#include "wolf3d.h"
 
 void create_minimap(t_wolf3d *wolf3d)
 {
