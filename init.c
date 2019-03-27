@@ -63,8 +63,9 @@ void graphics_init(t_wolf3d *wolf3d)
 
 	wolf3d->mlx_ptr = mlx_init();
 	wolf3d->win_ptr = mlx_new_window(wolf3d->mlx_ptr, CW, CH, "wolf3d");
-	wolf3d->image = mlx_new_image(wolf3d->mlx_ptr, CW, CH);
-	wolf3d->image_data = mlx_get_data_addr(wolf3d->image, &bytes, &len, &endian);
+	wolf3d->image.image = mlx_new_image(wolf3d->mlx_ptr, CW, CH);
+	wolf3d->image.image_data = mlx_get_data_addr(wolf3d->image.image, &bytes, &len, &endian);
+	wolf3d->image.len = CW;
 }
 
 void wolf3d_init(t_wolf3d *wolf3d, char *file_name)
@@ -76,4 +77,5 @@ void wolf3d_init(t_wolf3d *wolf3d, char *file_name)
 	player_init(wolf3d);
 	textures_load(wolf3d);
 	read_map_from_file(wolf3d, file_name);
+	init_minimap(wolf3d);
 }

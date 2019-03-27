@@ -157,14 +157,14 @@ void draw(t_wolf3d *wolf3d, int x, int wall, int col)
 					if (f_col < 0)
 						f_col = 960 + f_col;
 					f_row = (int)((float)y / (float)(CH_div_2) * 100);
-					put_point_to_image(wolf3d->image_data, x, y, get_rgb_from_texture(f_col, f_row, &(wolf3d->skybox)));//sky
+					put_point_to_image(&wolf3d->image, x, y, get_rgb_from_texture(f_col, f_row, &(wolf3d->skybox)));//sky
 				}
 				else
 				{
 
 					f_col = (int)((floor_x - (int)(floor_x)) * 32.0);
 					f_row = (int)((floor_y - (int)(floor_y)) * 32.0);
-					put_point_to_image(wolf3d->image_data, x, y, calculate_light(get_rgb_from_texture(f_col, f_row, &(wolf3d->textures[wood])), floor_dist));//seiling
+					put_point_to_image(&wolf3d->image, x, y, calculate_light(get_rgb_from_texture(f_col, f_row, &(wolf3d->textures[wood])), floor_dist));//seiling
 				}
 
 
@@ -180,9 +180,9 @@ void draw(t_wolf3d *wolf3d, int x, int wall, int col)
 				f_col = (int)((floor_x - (int)(floor_x)) * 32.0);
 				f_row = (int)((floor_y - (int)(floor_y)) * 32.0);
 				if (get_tile(floor_x, floor_y, wolf3d) == -1)
-					put_point_to_image(wolf3d->image_data, x, y, calculate_light(get_rgb_from_texture(f_col, f_row, &(wolf3d->textures[wood])), floor_dist));//floor
+					put_point_to_image(&wolf3d->image, x, y, calculate_light(get_rgb_from_texture(f_col, f_row, &(wolf3d->textures[wood])), floor_dist));//floor
 				else
-					put_point_to_image(wolf3d->image_data, x, y, get_rgb_from_texture(f_col, f_row, &(wolf3d->textures[wood])));//floor
+					put_point_to_image(&wolf3d->image, x, y, get_rgb_from_texture(f_col, f_row, &(wolf3d->textures[wood])));//floor
 
 			}
 		}
@@ -193,9 +193,9 @@ void draw(t_wolf3d *wolf3d, int x, int wall, int col)
 				get_tile(wolf3d->curr_cast.intersect_x - 0.1, wolf3d->curr_cast.intersect_y, wolf3d) == 0 ||
 				get_tile(wolf3d->curr_cast.intersect_x, wolf3d->curr_cast.intersect_y + 0.1, wolf3d) == 0 ||
 				get_tile(wolf3d->curr_cast.intersect_x, wolf3d->curr_cast.intersect_y - 0.1, wolf3d) == 0)
-				put_point_to_image(wolf3d->image_data, x, y, get_rgb_from_texture(col, row, &(wolf3d->textures[wolf3d->walls_mode ? wolf3d->curr_cast.compas : (wolf3d->curr_cast.type - 1)])));
+				put_point_to_image(&wolf3d->image, x, y, get_rgb_from_texture(col, row, &(wolf3d->textures[wolf3d->walls_mode ? wolf3d->curr_cast.compas : (wolf3d->curr_cast.type - 1)])));
 			else
-				put_point_to_image(wolf3d->image_data, x, y, calculate_light(get_rgb_from_texture(col, row, &(wolf3d->textures[wolf3d->walls_mode ? wolf3d->curr_cast.compas : (wolf3d->curr_cast.type - 1)])), wolf3d->curr_cast.distance));
+				put_point_to_image(&wolf3d->image, x, y, calculate_light(get_rgb_from_texture(col, row, &(wolf3d->textures[wolf3d->walls_mode ? wolf3d->curr_cast.compas : (wolf3d->curr_cast.type - 1)])), wolf3d->curr_cast.distance));
 
 		}
 	}
@@ -242,8 +242,9 @@ void provider(t_wolf3d *wolf3d)
 		}
 		draw(wolf3d, x, wall, col);
 	}
-	mlx_put_image_to_window(wolf3d->mlx_ptr, wolf3d->win_ptr, wolf3d->image, 0, 0);
+	mlx_put_image_to_window(wolf3d->mlx_ptr, wolf3d->win_ptr, wolf3d->image.image, 0, 0);
 
+	draw_minimap(wolf3d);
 	if (wolf3d->door)
 		mlx_string_put(wolf3d->mlx_ptr, wolf3d->win_ptr, CW / 2 - 20, CH / 2, 0xFFFF00, "Press F");
 }

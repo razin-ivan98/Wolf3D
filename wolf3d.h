@@ -77,18 +77,20 @@ typedef struct s_wolf3d
 
 	void *mlx_ptr;
 	void *win_ptr;
-	void *image;
-	char *image_data;
+
 
 	int walls_mode;
 
 	t_texture textures[6];
 	t_texture skybox;
+	t_texture image;
 	int **map;
 	int cols;
 	int rows;
 
 	int door;
+
+	t_texture minimap;
 
 	t_ray_cast curr_cast;
 	//t_wall_col curr_col;
@@ -105,14 +107,18 @@ void *shell_do(char *str);
 
 void wolf3d_init(t_wolf3d *wolf3d, char *file_name);
 
+void init_minimap(t_wolf3d *wolf3d);
+
 void read_map_from_file(t_wolf3d *wolf3d, char *file_name);
 
 void provider(t_wolf3d *wolf3d);
 
-void	put_point_to_image(char *image_data, int x, int y, t_rgb rgb);
+void	put_point_to_image(t_texture *image, int x, int y, t_rgb rgb);
 
 t_rgb get_rgb_from_texture(int col, int row, t_texture *texture);
 t_rgb calculate_light(t_rgb rbg, float distance);
+
+void draw_minimap(t_wolf3d *wolf3d);
 
 int key_pressed(int key, t_wolf3d *wolf3d);
 
