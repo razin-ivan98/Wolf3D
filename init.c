@@ -39,6 +39,10 @@ void textures_load(t_wolf3d *wolf3d)
 	wolf3d->textures[4].image_data = mlx_get_data_addr(wolf3d->textures[4].image, &bytes, &len, &endian);
 	wolf3d->textures[4].len = TEX_SIZE;
 
+	wolf3d->textures[5].image = mlx_xpm_file_to_image(wolf3d->mlx_ptr, "textures/door.xpm", &width, &height);
+	wolf3d->textures[5].image_data = mlx_get_data_addr(wolf3d->textures[5].image, &bytes, &len, &endian);
+	wolf3d->textures[5].len = TEX_SIZE;
+
 	len = 960;
 
 	wolf3d->skybox.image = mlx_xpm_file_to_image(wolf3d->mlx_ptr, "textures/sky.xpm", &width, &height);
@@ -65,7 +69,10 @@ void graphics_init(t_wolf3d *wolf3d)
 
 void wolf3d_init(t_wolf3d *wolf3d, char *file_name)
 {
-	graphics_init(wolf3d);
+	wolf3d->walls_mode = 0;
+	wolf3d->door = 0;
+	if (!wolf3d->mlx_ptr)
+		graphics_init(wolf3d);
 	player_init(wolf3d);
 	textures_load(wolf3d);
 	read_map_from_file(wolf3d, file_name);

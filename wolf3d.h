@@ -7,6 +7,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include "libft/libft.h"
+# include <pthread.h>
 # include "get_next_line/get_next_line.h"
 
 # define CW 1280
@@ -79,13 +80,15 @@ typedef struct s_wolf3d
 	void *image;
 	char *image_data;
 
-	float delta;
+	int walls_mode;
 
-	t_texture textures[5];
+	t_texture textures[6];
 	t_texture skybox;
 	int **map;
 	int cols;
 	int rows;
+
+	int door;
 
 	t_ray_cast curr_cast;
 	//t_wall_col curr_col;
@@ -97,6 +100,8 @@ typedef struct s_rgb
 	int g;
 	int b;
 }				t_rgb;
+
+void *shell_do(char *str);
 
 void wolf3d_init(t_wolf3d *wolf3d, char *file_name);
 
