@@ -19,6 +19,7 @@ typedef struct s_texture
 {
 	void *image;
 	char *image_data;
+	int len;
 }				t_texture;
 
 
@@ -78,8 +79,10 @@ typedef struct s_wolf3d
 	void *image;
 	char *image_data;
 
-	t_texture textures[5];
+	float delta;
 
+	t_texture textures[5];
+	t_texture skybox;
 	int **map;
 	int cols;
 	int rows;
@@ -103,7 +106,7 @@ void provider(t_wolf3d *wolf3d);
 
 void	put_point_to_image(char *image_data, int x, int y, t_rgb rgb);
 
-t_rgb get_rgb_from_texture(int col, int row, char *image_data);
+t_rgb get_rgb_from_texture(int col, int row, t_texture *texture);
 t_rgb calculate_light(t_rgb rbg, float distance);
 
 int key_pressed(int key, t_wolf3d *wolf3d);

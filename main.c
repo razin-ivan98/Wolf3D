@@ -111,7 +111,7 @@ void cast(t_wolf3d *wolf3d)
 	wolf3d->curr_cast.distance = 0.0;
 
 
-	while (!(wolf3d->curr_cast.type = get_tile(wolf3d->curr_cast.intersect_x, wolf3d->curr_cast.intersect_y, wolf3d)))
+	while ((wolf3d->curr_cast.type = get_tile(wolf3d->curr_cast.intersect_x, wolf3d->curr_cast.intersect_y, wolf3d)) <= 0)
 	{
 		wolf3d->curr_cast.intersect_x = wolf3d->player.pos_x + wolf3d->curr_cast.distance*cos_a;
 		wolf3d->curr_cast.intersect_y = wolf3d->player.pos_y + wolf3d->curr_cast.distance*sin_a;
@@ -153,9 +153,24 @@ void draw(t_wolf3d *wolf3d, int x, int wall, int col)
 				floor_x = wolf3d->player.pos_x + floor_dist * wolf3d->curr_cast.cos_a;
 				floor_y = wolf3d->player.pos_y + floor_dist * wolf3d->curr_cast.sin_a;
 
-				f_col = (int)((floor_x - (int)(floor_x)) * 32.0);
-				f_row = (int)((floor_y - (int)(floor_y)) * 32.0);
-				put_point_to_image(wolf3d->image_data, x, y, calculate_light(get_rgb_from_texture(f_col, f_row, wolf3d->textures[wood].image_data), floor_dist));//seiling
+				if (get_tile(floor_x, floor_y, wolf3d) == 0)
+				{
+					f_col = (int)(wolf3d->curr_cast.angle / (2 * M_PI) * 960) % 960;
+					if (f_col < 0)
+						f_col = 960 + f_col;
+					f_row = (int)((float)y / (float)(CH_div_2) * 100);
+					put_point_to_image(wolf3d->image_data, x, y, get_rgb_from_texture(f_col, f_row, &(wolf3d->skybox)));//sky
+				}
+				else
+				{
+
+					f_col = (int)((floor_x - (int)(floor_x)) * 32.0);
+					f_row = (int)((floor_y - (int)(floor_y)) * 32.0);
+					put_point_to_image(wolf3d->image_data, x, y, calculate_light(get_rgb_from_texture(f_col, f_row, &(wolf3d->textures[wood])), floor_dist));//seiling
+				}
+
+
+
 			}
 			else
 			{
@@ -166,26 +181,28 @@ void draw(t_wolf3d *wolf3d, int x, int wall, int col)
 
 				f_col = (int)((floor_x - (int)(floor_x)) * 32.0);
 				f_row = (int)((floor_y - (int)(floor_y)) * 32.0);
-				put_point_to_image(wolf3d->image_data, x, y, calculate_light(get_rgb_from_texture(f_col, f_row, wolf3d->textures[wood].image_data), floor_dist));//floor
+				put_point_to_image(wolf3d->image_data, x, y, calculate_light(get_rgb_from_texture(f_col, f_row, &(wolf3d->textures[wood])), floor_dist));//floor
 			}
 		}
 		else if (y > CH_div_2 - wall_div_2 && y <= CH_div_2 + wall_div_2)
 		{
 			row = (int)((y - (CH_div_2 - wall_div_2)) * delta_wall);
-			put_point_to_image(wolf3d->image_data, x, y, calculate_light(get_rgb_from_texture(col, row, wolf3d->textures[wolf3d->curr_cast.compas].image_data), wolf3d->curr_cast.distance));
+			put_point_to_image(wolf3d->image_data, x, y, calculate_light(get_rgb_from_texture(col, row, &(wolf3d->textures[wolf3d->curr_cast.compas])), wolf3d->curr_cast.distance));
 		}
 	}
 }
 
 void provider(t_wolf3d *wolf3d)
 {
-	float delta = FOV / CW;
+
 	int wall;
 	int col;
 
+	wolf3d->delta = FOV / CW;
+
 	for (int x = 0; x < CW; x++)
 	{
-		wolf3d->curr_cast.angle = wolf3d->player.angle - FOV_DIV_2 + delta * x;
+		wolf3d->curr_cast.angle = wolf3d->player.angle - FOV_DIV_2 + wolf3d->delta * x;
 		wolf3d->curr_cast.sin_a = sin(wolf3d->curr_cast.angle);
 		wolf3d->curr_cast.cos_a = cos(wolf3d->curr_cast.angle);
 		wolf3d->curr_cast.tan_a = tan(wolf3d->curr_cast.angle);
@@ -194,17 +211,17 @@ void provider(t_wolf3d *wolf3d)
 		cast(wolf3d);
 		wall =  CW / wolf3d->curr_cast.distance / cos(wolf3d->curr_cast.angle - wolf3d->player.angle);
 
-		if (!(get_tile(wolf3d->curr_cast.intersect_x + 0.01, wolf3d->curr_cast.intersect_y, wolf3d)) && cos(wolf3d->curr_cast.angle) < 0)
+		if ((get_tile(wolf3d->curr_cast.intersect_x + 0.01, wolf3d->curr_cast.intersect_y, wolf3d) <= 0) && cos(wolf3d->curr_cast.angle) < 0)
 		{
 			col = (int)((wolf3d->curr_cast.intersect_y - (int)(wolf3d->curr_cast.intersect_y)) * 32);
 			wolf3d->curr_cast.compas = east;
 		}
-		else if (!(get_tile(wolf3d->curr_cast.intersect_x - 0.01, wolf3d->curr_cast.intersect_y, wolf3d)) && cos(wolf3d->curr_cast.angle) > 0)
+		else if ((get_tile(wolf3d->curr_cast.intersect_x - 0.01, wolf3d->curr_cast.intersect_y, wolf3d) <= 0) && cos(wolf3d->curr_cast.angle) > 0)
 		{
 			col = (int)((wolf3d->curr_cast.intersect_y - (int)(wolf3d->curr_cast.intersect_y)) * 32);
 			wolf3d->curr_cast.compas = west;
 		}
-		else if	(!(get_tile(wolf3d->curr_cast.intersect_x, wolf3d->curr_cast.intersect_y + 0.01, wolf3d)))
+		else if	((get_tile(wolf3d->curr_cast.intersect_x, wolf3d->curr_cast.intersect_y + 0.01, wolf3d) <= 0))
 		{
 			col = (int)((wolf3d->curr_cast.intersect_x - (int)(wolf3d->curr_cast.intersect_x)) * 32);
 			wolf3d->curr_cast.compas = north;
@@ -228,6 +245,8 @@ int nothing_happened(t_wolf3d *wolf3d)
 int main(int ac, char **av)
 {
 
+
+
 	t_wolf3d wolf3d;
 
 	if (ac != 2)
@@ -242,7 +261,7 @@ int main(int ac, char **av)
 	mlx_hook(wolf3d.win_ptr, 2, 1L << 0, key_pressed, &wolf3d);
 	//mlx_hook(wolf3d.win_ptr, 14, 1L << 0, nothing_happened, &wolf3d);
 	//mlx_expose_hook(wolf3d.win_ptr, nothing_happened, &wolf3d);
-
+//mlx_put_image_to_window(wolf3d.mlx_ptr, wolf3d.win_ptr, wolf3d.skybox.image, 0, 0);
 	mlx_loop(wolf3d.mlx_ptr);
 
 }

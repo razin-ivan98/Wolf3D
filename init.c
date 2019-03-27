@@ -21,18 +21,29 @@ void textures_load(t_wolf3d *wolf3d)
 
 	wolf3d->textures[0].image = mlx_xpm_file_to_image(wolf3d->mlx_ptr, "textures/stone.xpm", &width, &height);
 	wolf3d->textures[0].image_data = mlx_get_data_addr(wolf3d->textures[0].image, &bytes, &len, &endian);
+	wolf3d->textures[0].len = TEX_SIZE;
 
 	wolf3d->textures[1].image = mlx_xpm_file_to_image(wolf3d->mlx_ptr, "textures/grass.xpm", &width, &height);
 	wolf3d->textures[1].image_data = mlx_get_data_addr(wolf3d->textures[1].image, &bytes, &len, &endian);
+	wolf3d->textures[1].len = TEX_SIZE;
 
 	wolf3d->textures[2].image = mlx_xpm_file_to_image(wolf3d->mlx_ptr, "textures/brick.xpm", &width, &height);
 	wolf3d->textures[2].image_data = mlx_get_data_addr(wolf3d->textures[2].image, &bytes, &len, &endian);
+	wolf3d->textures[2].len = TEX_SIZE;
 
 	wolf3d->textures[3].image = mlx_xpm_file_to_image(wolf3d->mlx_ptr, "textures/metal.xpm", &width, &height);
 	wolf3d->textures[3].image_data = mlx_get_data_addr(wolf3d->textures[3].image, &bytes, &len, &endian);
+	wolf3d->textures[3].len = TEX_SIZE;
 
 	wolf3d->textures[4].image = mlx_xpm_file_to_image(wolf3d->mlx_ptr, "textures/wood.xpm", &width, &height);
 	wolf3d->textures[4].image_data = mlx_get_data_addr(wolf3d->textures[4].image, &bytes, &len, &endian);
+	wolf3d->textures[4].len = TEX_SIZE;
+
+	len = 960;
+
+	wolf3d->skybox.image = mlx_xpm_file_to_image(wolf3d->mlx_ptr, "textures/sky.xpm", &width, &height);
+	wolf3d->skybox.image_data = mlx_get_data_addr(wolf3d->skybox.image, &bytes, &len, &endian);
+	wolf3d->skybox.len = 960;
 
 }
 
