@@ -127,7 +127,7 @@ void draw(t_wolf3d *wolf3d, int x, int wall, int col)
 {
 	int row;
 	float delta_wall, floor_dist;
-	delta_wall = 32.0 / wall;
+	delta_wall = (float)wolf3d->tex_size / wall;
 
 	float floor_x;
 	float floor_y;
@@ -162,8 +162,8 @@ void draw(t_wolf3d *wolf3d, int x, int wall, int col)
 				else
 				{
 
-					f_col = (int)((floor_x - (int)(floor_x)) * 32.0);
-					f_row = (int)((floor_y - (int)(floor_y)) * 32.0);
+					f_col = (int)((floor_x - (int)(floor_x)) * wolf3d->tex_size);
+					f_row = (int)((floor_y - (int)(floor_y)) * wolf3d->tex_size);
 					put_point_to_image(&wolf3d->image, x, y, calculate_light(get_rgb_from_texture(f_col, f_row, &(wolf3d->textures[wood])), floor_dist));//seiling
 				}
 
@@ -177,8 +177,8 @@ void draw(t_wolf3d *wolf3d, int x, int wall, int col)
 				floor_x = wolf3d->player.pos_x + floor_dist * wolf3d->curr_cast.cos_a;
 				floor_y = wolf3d->player.pos_y + floor_dist * wolf3d->curr_cast.sin_a;
 
-				f_col = (int)((floor_x - (int)(floor_x)) * 32.0);
-				f_row = (int)((floor_y - (int)(floor_y)) * 32.0);
+				f_col = (int)((floor_x - (int)(floor_x)) * wolf3d->tex_size);
+				f_row = (int)((floor_y - (int)(floor_y)) * wolf3d->tex_size);
 				if (get_tile(floor_x, floor_y, wolf3d) == -1)
 					put_point_to_image(&wolf3d->image, x, y, calculate_light(get_rgb_from_texture(f_col, f_row, &(wolf3d->textures[wood])), floor_dist));//floor
 				else
@@ -222,22 +222,22 @@ void provider(t_wolf3d *wolf3d)
 
 		if ((get_tile(wolf3d->curr_cast.intersect_x + 0.01, wolf3d->curr_cast.intersect_y, wolf3d) <= 0) && cos(wolf3d->curr_cast.angle) < 0)
 		{
-			col = (int)((wolf3d->curr_cast.intersect_y - (int)(wolf3d->curr_cast.intersect_y)) * 32);
+			col = (int)((wolf3d->curr_cast.intersect_y - (int)(wolf3d->curr_cast.intersect_y)) * wolf3d->tex_size);
 			wolf3d->curr_cast.compas = east;
 		}
 		else if ((get_tile(wolf3d->curr_cast.intersect_x - 0.01, wolf3d->curr_cast.intersect_y, wolf3d) <= 0) && cos(wolf3d->curr_cast.angle) > 0)
 		{
-			col = (int)((wolf3d->curr_cast.intersect_y - (int)(wolf3d->curr_cast.intersect_y)) * 32);
+			col = (int)((wolf3d->curr_cast.intersect_y - (int)(wolf3d->curr_cast.intersect_y)) * wolf3d->tex_size);
 			wolf3d->curr_cast.compas = west;
 		}
 		else if	((get_tile(wolf3d->curr_cast.intersect_x, wolf3d->curr_cast.intersect_y + 0.01, wolf3d) <= 0))
 		{
-			col = (int)((wolf3d->curr_cast.intersect_x - (int)(wolf3d->curr_cast.intersect_x)) * 32);
+			col = (int)((wolf3d->curr_cast.intersect_x - (int)(wolf3d->curr_cast.intersect_x)) * wolf3d->tex_size);
 			wolf3d->curr_cast.compas = north;
 		}
 		else
 		{
-			col = (int)((wolf3d->curr_cast.intersect_x - (int)(wolf3d->curr_cast.intersect_x)) * 32);
+			col = (int)((wolf3d->curr_cast.intersect_x - (int)(wolf3d->curr_cast.intersect_x)) * wolf3d->tex_size);
 			wolf3d->curr_cast.compas = south;
 		}
 		draw(wolf3d, x, wall, col);
@@ -249,23 +249,35 @@ void provider(t_wolf3d *wolf3d)
 		mlx_string_put(wolf3d->mlx_ptr, wolf3d->win_ptr, CW / 2 - 20, CH / 2, 0xFFFF00, "Press F");
 }
 
+void run_game(t_wolf3d *wolf3d)
+{
+	wolf3d_init(wolf3d, wolf3d->file_name);
 
+
+	provider(wolf3d);
+
+
+	mlx_hook(wolf3d->win_ptr, 2, 1L << 0, key_pressed, wolf3d);
+	mlx_hook(wolf3d->win_ptr, 17, 1L << 0, exit_full, NULL);
+	mlx_loop(wolf3d->mlx_ptr);
+
+
+
+}
 
 int main(int ac, char **av)
 {
-
 	t_wolf3d wolf3d;
 
 	if (ac != 2)
 		err_exit();
 
-	wolf3d_init(&wolf3d, av[1]);
+
+	wolf3d.mlx_ptr = mlx_init();
+	ft_strcpy(wolf3d.file_name, av[1]);
+	menu_init(&wolf3d);
 
 
-	provider(&wolf3d);
 
-
-	mlx_hook(wolf3d.win_ptr, 2, 1L << 0, key_pressed, &wolf3d);
-	mlx_loop(wolf3d.mlx_ptr);
 
 }

@@ -6,7 +6,7 @@
 #    By: chorange <chorange@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/18 18:53:25 by chorange          #+#    #+#              #
-#    Updated: 2019/03/27 19:34:17 by chorange         ###   ########.fr        #
+#    Updated: 2019/03/28 19:03:46 by chorange         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = Wolf3D
 
 FLAGS =# -Wextra -Wall -Werror
 
-OBJECTS = main.o color.o err_exit.o image.o init.o keys_handling.o map.o read_map_from_file.o textures.o get_next_line/get_next_line.o minimap.o
+OBJECTS = main.o color.o err_exit.o image.o init.o keys_handling.o map.o read_map_from_file.o textures.o get_next_line/get_next_line.o minimap.o menu.o
 LIBS = -L./minilibx -lmlx -L./libft -lft -lm -framework OpenGL -framework AppKit -framework OpenCL
 
 INCLUDES = -I./libft/libft.h -I./minilibx/mlx.h

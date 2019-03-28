@@ -10,9 +10,9 @@
 # include <pthread.h>
 # include "get_next_line/get_next_line.h"
 
-# define CW 640
-# define CH  480
-# define TEX_SIZE 32
+# define CW 1280
+# define CH  720
+//# define TEX_SIZE 32
 # define FOV M_PI/3
 # define FOV_DIV_2 FOV / 2
 
@@ -80,11 +80,20 @@ typedef struct s_player
 
 typedef struct s_wolf3d
 {
+	char file_name[128];
+
 	t_player player;
 
 	void *mlx_ptr;
 	void *win_ptr;
 
+	void *menu_win_ptr;
+
+	t_texture menu;
+
+
+
+	int tex_size;
 
 	int walls_mode;
 
@@ -96,10 +105,14 @@ typedef struct s_wolf3d
 	int rows;
 
 	int door;
-
+	int hd;
 	t_texture minimap;
 
 	t_ray_cast curr_cast;
+
+
+
+	int menu_selected;
 	//t_wall_col curr_col;
 }				t_wolf3d;
 
@@ -118,6 +131,8 @@ void init_minimap(t_wolf3d *wolf3d);
 
 void read_map_from_file(t_wolf3d *wolf3d, char *file_name);
 
+void run_game(t_wolf3d *wolf3d);
+
 void provider(t_wolf3d *wolf3d);
 
 void	put_point_to_image(t_texture *image, int x, int y, t_rgb rgb);
@@ -135,5 +150,13 @@ t_rgb color_to_rgb(int color);
 int rgb_to_color(t_rgb rgb);
 
 void err_exit(void);
+
+
+
+void menu_init(t_wolf3d *wolf3d);
+void menu_provider(t_wolf3d *wolf3d);
+
+
+int exit_full(void);
 
 #endif
