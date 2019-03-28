@@ -29,7 +29,7 @@ typedef struct s_door
 	float pos_x;
 	float pos_y;
 	float angle;
-}				t_door
+}				t_door;
 
 typedef enum
 {
