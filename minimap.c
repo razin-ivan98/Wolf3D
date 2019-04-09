@@ -11,7 +11,7 @@ void create_minimap(t_wolf3d *wolf3d)
 		j = 0;
 		while(j < (wolf3d->rows * 8))
 		{
-			if (get_tile(((float)i)/8, ((float)j)/8, wolf3d) == 6)
+			if (get_tile(((float)i)/8, ((float)j)/8, wolf3d) == 9)
 				put_point_to_image(&wolf3d->minimap, i, j, color_to_rgb(0x0000FF));
 			else if (get_tile(((float)i)/8, ((float)j)/8, wolf3d) > 0)
 				put_point_to_image(&wolf3d->minimap, i, j, color_to_rgb(0x00FF00));

@@ -33,7 +33,7 @@ void textures_load(t_wolf3d *wolf3d)
 	texture_load(wolf3d, &(wolf3d->textures[2]), wolf3d->tex_size, wolf3d->hd ? "textures_hi/brick.xpm" : "textures/brick.xpm");
 	texture_load(wolf3d, &(wolf3d->textures[3]), wolf3d->tex_size, wolf3d->hd ? "textures_hi/metal.xpm" : "textures/metal.xpm");
 	texture_load(wolf3d, &(wolf3d->textures[4]), wolf3d->tex_size, wolf3d->hd ? "textures_hi/wood.xpm" : "textures/wood.xpm");
-	texture_load(wolf3d, &(wolf3d->textures[5]), wolf3d->tex_size, wolf3d->hd ? "textures/door.xpm" : "textures/door.xpm");
+	texture_load(wolf3d, &(wolf3d->textures[9]), wolf3d->tex_size, wolf3d->hd ? "textures/door.xpm" : "textures/door.xpm");
 
 	texture_load(wolf3d, &wolf3d->skybox, 960, "textures/sky.xpm");
 

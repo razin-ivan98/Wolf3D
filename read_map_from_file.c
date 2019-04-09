@@ -10,7 +10,7 @@ void parse_string(t_wolf3d *wolf3d, char *line, int row)
 	col = 0;
 	while (col < wolf3d->cols)
 	{
-		wolf3d->map[col][row] = atoi(ptr);//////forbidden funtion
+		wolf3d->map[col][row] = atoi(ptr);
 		ptr = strchr(ptr, ' ') + 1;
 		col++;
 	}
@@ -38,11 +38,11 @@ void read_map_from_file(t_wolf3d *wolf3d, char *file_name)
 	fd = open(file_name, O_RDONLY);
 	//	err_exit();
 	get_next_line(fd, &line);///////check
-	wolf3d->cols = atoi(line);//////forbidden funtion
+	wolf3d->cols = ft_atoi(line);
 	free (line);
 
 	get_next_line(fd, &line);///////check
-	wolf3d->rows = atoi(line);//////forbidden funtion
+	wolf3d->rows = ft_atoi(line);
 	free (line);
 
 	allocate_arr(wolf3d);

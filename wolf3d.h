@@ -10,8 +10,8 @@
 # include <pthread.h>
 # include "get_next_line/get_next_line.h"
 
-# define CW 1280
-# define CH  720
+# define CW 640
+# define CH  480
 //# define TEX_SIZE 32
 # define FOV M_PI/3
 # define FOV_DIV_2 FOV / 2
@@ -97,7 +97,7 @@ typedef struct s_wolf3d
 
 	int walls_mode;
 
-	t_texture textures[6];
+	t_texture textures[10];
 	t_texture skybox;
 	t_texture image;
 	int **map;
@@ -106,6 +106,7 @@ typedef struct s_wolf3d
 
 	int door;
 	int hd;
+	int light;
 	t_texture minimap;
 
 	t_ray_cast curr_cast;
@@ -158,5 +159,9 @@ void menu_provider(t_wolf3d *wolf3d);
 
 
 int exit_full(void);
+
+
+
+double ft_atof(char *str);
 
 #endif
