@@ -110,6 +110,8 @@ typedef struct s_wolf3d
 
 	t_door doors[10];
 	int menu_selected;
+
+	int minimap_scale;
 }				t_wolf3d;
 
 typedef struct s_rgb

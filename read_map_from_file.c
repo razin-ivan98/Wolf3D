@@ -10,9 +10,9 @@ void parse_string(t_wolf3d *wolf3d, char *line, int row)
 	col = 0;
 	while (col < wolf3d->cols)
 	{
-		wolf3d->map[col][row] = atoi(ptr);
+		wolf3d->map[col][row] = ft_atoi(ptr);
 		if (col < wolf3d->cols - 1)
-			ptr = strchr(ptr, ' ');
+			ptr = ft_strchr(ptr, ' ');
 		while (*ptr == ' ')
 			ptr++;
 		col++;
@@ -59,7 +59,7 @@ void read_map_from_file(t_wolf3d *wolf3d, char *file_name)
 	while (row < wolf3d->rows)
 	{
 		get_next_line(fd, &line);
-		puts(line);
+		//puts(line);
 		parse_string(wolf3d, line, row);
 		free(line);
 		row++;
@@ -88,19 +88,19 @@ void read_map_from_file(t_wolf3d *wolf3d, char *file_name)
 		wolf3d->doors[i].pos_y = (float)ft_atoi(ptr) + 0.5;
 
 
-		printf("\nx = %f\n", wolf3d->doors[i].pos_x);
-		printf("y = %f\n", wolf3d->doors[i].pos_y);
+		//printf("\nx = %f\n", wolf3d->doors[i].pos_x);
+		//printf("y = %f\n", wolf3d->doors[i].pos_y);
 
 		free (line);
 		i++;
 	}
-
+/*
 	i = 0;
 	while (i < 10)
 	{
 		puts(wolf3d->doors[i].file_name);
 		i++;
-	}
+	}*/
 
 	close (fd);
 /*

@@ -69,7 +69,7 @@ t_rgb get_rgb_from_texture(float col, float row, t_texture *texture, t_wolf3d *w
 {
 	int index;
 	t_rgb rgb;
-/*
+
 	if (col < 0)
 		col *= -1;
 	if (row < 0)
@@ -78,7 +78,7 @@ t_rgb get_rgb_from_texture(float col, float row, t_texture *texture, t_wolf3d *w
 		col = texture->len - 1;
 	if (row > texture->len)
 		row = texture->len - 1;
-*/
+
 	if (wolf3d->filtr)
 	{
 		rgb.r = bilinear_filtration(col, row, texture, 2);
