@@ -16,20 +16,7 @@
 # define FOV M_PI/3
 # define FOV_DIV_2 FOV / 2
 
-typedef struct s_texture
-{
-	void *image;
-	char *image_data;
-	int len;
-}				t_texture;
 
-typedef struct s_door
-{
-	char file_name[56];
-	float pos_x;
-	float pos_y;
-	float angle;
-}				t_door;
 
 typedef enum
 {
@@ -57,6 +44,20 @@ typedef struct s_wall_col
 	float distance;
 }			t_wall_col;
 */
+typedef struct s_texture
+{
+	void *image;
+	char *image_data;
+	int len;
+}				t_texture;
+
+typedef struct s_door
+{
+	char *file_name;
+	float pos_x;
+	float pos_y;
+	float angle;
+}				t_door;
 
 typedef struct s_ray_cast
 {
@@ -80,19 +81,13 @@ typedef struct s_player
 
 typedef struct s_wolf3d
 {
-	char file_name[128];
+	char file_name[24];
 
 	t_player player;
-
 	void *mlx_ptr;
 	void *win_ptr;
-
 	void *menu_win_ptr;
-
 	t_texture menu;
-
-
-
 	int tex_size;
 
 	int walls_mode;
@@ -105,14 +100,15 @@ typedef struct s_wolf3d
 	int rows;
 
 	int door;
+
 	int hd;
 	int light;
 	t_texture minimap;
 
 	t_ray_cast curr_cast;
 
-
-
+	t_door doors[10];
+	//char doors[10][24];
 	int menu_selected;
 	//t_wall_col curr_col;
 }				t_wolf3d;

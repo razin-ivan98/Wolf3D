@@ -115,7 +115,9 @@ void menu_init(t_wolf3d *wolf3d)
 {
 
 
-
+	wolf3d->hd = 0;
+	wolf3d->light = 0;
+	wolf3d->walls_mode = 0;
 	wolf3d->menu_selected = 0;
 	menu_image_init(wolf3d);
 

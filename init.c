@@ -33,7 +33,7 @@ void textures_load(t_wolf3d *wolf3d)
 	texture_load(wolf3d, &(wolf3d->textures[2]), wolf3d->tex_size, wolf3d->hd ? "textures_hi/brick.xpm" : "textures/brick.xpm");
 	texture_load(wolf3d, &(wolf3d->textures[3]), wolf3d->tex_size, wolf3d->hd ? "textures_hi/metal.xpm" : "textures/metal.xpm");
 	texture_load(wolf3d, &(wolf3d->textures[4]), wolf3d->tex_size, wolf3d->hd ? "textures_hi/wood.xpm" : "textures/wood.xpm");
-	texture_load(wolf3d, &(wolf3d->textures[9]), wolf3d->tex_size, wolf3d->hd ? "textures/door.xpm" : "textures/door.xpm");
+	texture_load(wolf3d, &(wolf3d->textures[9]), wolf3d->tex_size, wolf3d->hd ? "textures_hi/door.xpm" : "textures/door.xpm");
 
 	texture_load(wolf3d, &wolf3d->skybox, 960, "textures/sky.xpm");
 
@@ -53,18 +53,32 @@ void graphics_init(t_wolf3d *wolf3d)
 	wolf3d->image.image = mlx_new_image(wolf3d->mlx_ptr, CW, CH);
 	wolf3d->image.image_data = mlx_get_data_addr(wolf3d->image.image, &bytes, &len, &endian);
 	wolf3d->image.len = CW;
+	
+	int i;
+
+	i = 0;
+	
+	while (i < 10)
+	{
+		wolf3d->doors[i].file_name = malloc(24);
+		i++;
+	}
+	player_init(wolf3d);
 }
 
 void wolf3d_init(t_wolf3d *wolf3d, char *file_name)
 {
+	
 	//wolf3d->hd = 1;
 	//wolf3d->walls_mode = 0;
 	wolf3d->door = 0;
 	wolf3d->tex_size = (wolf3d->hd ? 1024 : 32);
 	if (!wolf3d->win_ptr)
 		graphics_init(wolf3d);
-	player_init(wolf3d);
+	//player_init(wolf3d);
 	textures_load(wolf3d);
 	read_map_from_file(wolf3d, file_name);
 	init_minimap(wolf3d);
+
+
 }
