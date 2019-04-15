@@ -212,7 +212,7 @@ void draw(t_wolf3d *wolf3d, int x, int wall, float col)
 				if (f_row < 0)
 						f_row = -f_row;
 */
-				if (get_tile(floor_x, floor_y, wolf3d) < 0 && wolf3d->light)
+				if (get_tile(floor_x, floor_y, wolf3d) != 0 && wolf3d->light)
 					put_point_to_image(&wolf3d->image, x, y, calculate_light(get_rgb_from_texture(f_col, f_row, &(wolf3d->textures[wood]), wolf3d), floor_dist));//floor
 				else
 					put_point_to_image(&wolf3d->image, x, y, get_rgb_from_texture(f_col, f_row, &(wolf3d->textures[wood]), wolf3d));//floor
