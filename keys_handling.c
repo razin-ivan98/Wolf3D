@@ -62,7 +62,7 @@ int key_pressed(int key, t_wolf3d *wolf3d)
 			wolf3d->player.pos_x = wolf3d->doors[wolf3d->door - 1].pos_x;
 			wolf3d->player.pos_y = wolf3d->doors[wolf3d->door - 1].pos_y;
 			wolf3d_init(wolf3d, (wolf3d->doors[wolf3d->door - 1].file_name));
-			
+			//check
 		}
 	}
 

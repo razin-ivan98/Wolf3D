@@ -70,6 +70,7 @@ typedef struct s_ray_cast
 	float distance;
 	int type;
 	int compas;
+	float col;
 }				t_ray_cast;
 
 typedef struct s_player
@@ -108,9 +109,7 @@ typedef struct s_wolf3d
 	t_ray_cast curr_cast;
 
 	t_door doors[10];
-	//char doors[10][24];
 	int menu_selected;
-	//t_wall_col curr_col;
 }				t_wolf3d;
 
 typedef struct s_rgb
