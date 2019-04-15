@@ -36,7 +36,7 @@ int menu_key_pressed(int key, t_wolf3d *wolf3d)
 	}
 	else if (key ==0x07D || key == 0xff54)
 	{
-		if (wolf3d->menu_selected < 4)
+		if (wolf3d->menu_selected < 5)
 			wolf3d->menu_selected++;
 	}
 
@@ -49,11 +49,13 @@ int menu_key_pressed(int key, t_wolf3d *wolf3d)
 		else if (wolf3d->menu_selected == 2)
 			wolf3d->light = wolf3d->light ? 0 : 1;
 		else if (wolf3d->menu_selected == 3)
+			wolf3d->filtr = wolf3d->filtr ? 0 : 1;
+		else if (wolf3d->menu_selected == 4)
 		{
 			mlx_destroy_window(wolf3d->mlx_ptr, wolf3d->menu_win_ptr);
 			run_game(wolf3d);
 		}
-		else if (wolf3d->menu_selected == 4)
+		else if (wolf3d->menu_selected == 5)
 		{
 			exit(1);
 		}
@@ -104,10 +106,14 @@ void menu_provider(t_wolf3d *wolf3d)
 		mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 110, wolf3d->menu_selected == 2 ? 0xFF0000 : 0x555500, "light mode enable");
 	else
 		mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 110, wolf3d->menu_selected == 2 ? 0xFF0000 : 0x555500, "light mode disable");
+	if (wolf3d->filtr)
+		mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 140, wolf3d->menu_selected == 3 ? 0xFF0000 : 0x555500, "bilinear filtration enable");
+	else
+		mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 140, wolf3d->menu_selected == 3 ? 0xFF0000 : 0x555500, "bilinear filtration disable");
 
 
-	mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 140, wolf3d->menu_selected == 3 ? 0xFF0000 : 0x555500, "Play");
-	mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 170, wolf3d->menu_selected == 4 ? 0xFF0000 : 0x555500, "Exit");
+	mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 170, wolf3d->menu_selected == 4 ? 0xFF0000 : 0x555500, "Play");
+	mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 200, wolf3d->menu_selected == 5 ? 0xFF0000 : 0x555500, "Exit");
 
 }
 
@@ -118,6 +124,7 @@ void menu_init(t_wolf3d *wolf3d)
 	wolf3d->hd = 0;
 	wolf3d->light = 0;
 	wolf3d->walls_mode = 0;
+	wolf3d->filtr = 0;
 	wolf3d->menu_selected = 0;
 	menu_image_init(wolf3d);
 

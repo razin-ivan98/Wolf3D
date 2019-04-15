@@ -91,7 +91,7 @@ typedef struct s_wolf3d
 	int tex_size;
 
 	int walls_mode;
-
+	int filtr;
 	t_texture textures[10];
 	t_texture skybox;
 	t_texture image;
@@ -134,7 +134,7 @@ void provider(t_wolf3d *wolf3d);
 
 void	put_point_to_image(t_texture *image, int x, int y, t_rgb rgb);
 
-t_rgb get_rgb_from_texture(int col, int row, t_texture *texture);
+t_rgb get_rgb_from_texture(float col, float row, t_texture *texture, t_wolf3d *wolf3d);
 t_rgb calculate_light(t_rgb rbg, float distance);
 
 void draw_minimap(t_wolf3d *wolf3d);
