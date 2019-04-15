@@ -2,7 +2,7 @@ NAME = Wolf3D
 
 FLAGS =# -Wextra -Wall -Werror
 
-OBJECTS = main.o color.o err_exit.o image.o init.o keys_handling.o map.o read_map_from_file.o textures.o get_next_line/get_next_line.o minimap.o menu.o atof.o
+OBJECTS = main.o color.o err_exit.o image.o init.o keys_handling.o map.o read_map_from_file.o textures.o get_next_line/get_next_line.o minimap.o menu.o
 LIBS = -L. -lmlx_Linux -L./libft -lft -lm -lX11 -lXext
 
 #INCLUDES = -I./libft/libft.h #-I./minilibx/mlx.h

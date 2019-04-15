@@ -1,28 +1,12 @@
 #include "wolf3d.h"
 
-void free_map(t_wolf3d *wolf3d)
-{
-	int i;
-
-	i = 0;
-	while (i < wolf3d->cols)
-	{
-		if (wolf3d->map[i])
-			free (wolf3d->map[i]);
-		i++;
-	}
-	if (wolf3d->map)
-		free (wolf3d->map);
-}
-
 int key_pressed(int key, t_wolf3d *wolf3d)
 {
 
 
 	if (key == 0x35 || key == 0xff1b)
 	{
-		free_map(wolf3d);
-		exit(1);
+		exit_full(wolf3d);
 	}
 
 	else if (key == 0x07C || key == 0xff53)

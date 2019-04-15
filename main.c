@@ -387,14 +387,34 @@ void run_game(t_wolf3d *wolf3d)
 
 }
 
+void null_all(t_wolf3d *wolf3d)
+{
+	int i;
+
+	i = 0;
+	while (i < 10)
+	{
+		wolf3d->textures[i].image = NULL;
+		wolf3d->doors[i].file_name = NULL;
+		i++;
+	}
+	wolf3d->map = NULL;
+	wolf3d->line = NULL;
+	wolf3d->skybox.image = NULL;
+	wolf3d->minimap.image = NULL;
+	wolf3d->menu.image = NULL;
+	wolf3d->image.image = NULL;
+}
+
 int main(int ac, char **av)
 {
 	t_wolf3d wolf3d;
 
+	null_all(&wolf3d);
 	if (ac != 2)
-		err_exit();
+		err_exit(&wolf3d);
 
-
+	null_all(&wolf3d);
 	wolf3d.mlx_ptr = mlx_init();
 	ft_strcpy(wolf3d.file_name, av[1]);
 	menu_init(&wolf3d);

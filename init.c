@@ -28,6 +28,7 @@ void texture_load(t_wolf3d *wolf3d, t_texture *texture, int w, char *file_name)
 
 void textures_load(t_wolf3d *wolf3d)
 {
+	
 	texture_load(wolf3d, &(wolf3d->textures[0]), wolf3d->tex_size, wolf3d->hd ? "textures_hi/stone.xpm" : "textures/stone.xpm");
 	texture_load(wolf3d, &(wolf3d->textures[1]), wolf3d->tex_size, wolf3d->hd ? "textures_hi/grass.xpm" : "textures/grass.xpm");
 	texture_load(wolf3d, &(wolf3d->textures[2]), wolf3d->tex_size, wolf3d->hd ? "textures_hi/brick.xpm" : "textures/brick.xpm");
@@ -60,14 +61,17 @@ void graphics_init(t_wolf3d *wolf3d)
 	
 	while (i < 10)
 	{
-		wolf3d->doors[i].file_name = malloc(24);
+		wolf3d->doors[i].file_name = (char *)ft_memalloc(24);
 		i++;
 	}
+	//wolf3d->textures = (t_texture *)ft_memalloc(sizeof(t_texture) * 10);
+
 	player_init(wolf3d);
 }
 
 void wolf3d_init(t_wolf3d *wolf3d, char *file_name)
 {
+
 	
 	//wolf3d->hd = 1;
 	//wolf3d->walls_mode = 0;

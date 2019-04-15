@@ -18,10 +18,6 @@ void menu_image_init(t_wolf3d *wolf3d)
 
 }
 
-int exit_full(void)
-{
-	exit(1);
-}
 
 int menu_key_pressed(int key, t_wolf3d *wolf3d)
 {
@@ -57,7 +53,7 @@ int menu_key_pressed(int key, t_wolf3d *wolf3d)
 		}
 		else if (wolf3d->menu_selected == 5)
 		{
-			exit(1);
+			exit_full(wolf3d);
 		}
 	}
 

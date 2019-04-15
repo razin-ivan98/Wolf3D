@@ -42,8 +42,6 @@ void init_minimap(t_wolf3d *wolf3d)
 	len = wolf3d->cols * wolf3d->minimap_scale;
 	endian = 0;
 
-
-	
 	wolf3d->minimap.image = mlx_new_image(wolf3d->mlx_ptr, wolf3d->cols * wolf3d->minimap_scale, wolf3d->rows * wolf3d->minimap_scale);
 	wolf3d->minimap.image_data = mlx_get_data_addr(wolf3d->minimap.image, &bytes, &len, &endian);
 	wolf3d->minimap.len = wolf3d->cols * wolf3d->minimap_scale;

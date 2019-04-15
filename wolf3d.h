@@ -101,7 +101,6 @@ typedef struct s_wolf3d
 	int rows;
 
 	int door;
-
 	int hd;
 	int light;
 	t_texture minimap;
@@ -112,6 +111,7 @@ typedef struct s_wolf3d
 	int menu_selected;
 
 	int minimap_scale;
+	char *line;
 }				t_wolf3d;
 
 typedef struct s_rgb
@@ -147,15 +147,15 @@ int get_tile(float x, float y, t_wolf3d *wolf3d);
 t_rgb color_to_rgb(int color);
 int rgb_to_color(t_rgb rgb);
 
-void err_exit(void);
-
+void err_exit(t_wolf3d *wolf3d);
+void free_map(t_wolf3d *wolf3d);
 
 
 void menu_init(t_wolf3d *wolf3d);
 void menu_provider(t_wolf3d *wolf3d);
 
 
-int exit_full(void);
+int exit_full(t_wolf3d *wolf3d);
 
 
 
