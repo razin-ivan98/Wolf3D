@@ -380,7 +380,7 @@ void run_game(t_wolf3d *wolf3d)
 
 
 	mlx_hook(wolf3d->win_ptr, 2, 1L << 0, key_pressed, wolf3d);
-	mlx_hook(wolf3d->win_ptr, 17, 1L << 0, exit_full, NULL);
+	mlx_hook(wolf3d->win_ptr, 17, 1L << 0, exit_full, wolf3d);
 	mlx_loop(wolf3d->mlx_ptr);
 
 
@@ -404,6 +404,8 @@ void null_all(t_wolf3d *wolf3d)
 	wolf3d->minimap.image = NULL;
 	wolf3d->menu.image = NULL;
 	wolf3d->image.image = NULL;
+	wolf3d->win_ptr = NULL;
+	wolf3d->menu_win_ptr = NULL;
 }
 
 int main(int ac, char **av)

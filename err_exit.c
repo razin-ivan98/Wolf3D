@@ -62,6 +62,10 @@ int exit_full(t_wolf3d *wolf3d)
 	free_map(wolf3d);
 	free_doors(wolf3d);
 	free_textures(wolf3d);
+	if (wolf3d->win_ptr)
+		mlx_destroy_window(wolf3d->mlx_ptr, wolf3d->win_ptr);
+	if (wolf3d->menu_win_ptr)
+		mlx_destroy_window(wolf3d->mlx_ptr, wolf3d->menu_win_ptr);
 	exit(1);
 }
 

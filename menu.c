@@ -49,6 +49,7 @@ int menu_key_pressed(int key, t_wolf3d *wolf3d)
 		else if (wolf3d->menu_selected == 4)
 		{
 			mlx_destroy_window(wolf3d->mlx_ptr, wolf3d->menu_win_ptr);
+			wolf3d->menu_win_ptr = NULL;
 			run_game(wolf3d);
 		}
 		else if (wolf3d->menu_selected == 5)
