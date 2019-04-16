@@ -12,7 +12,7 @@ void parse_string(t_wolf3d *wolf3d, char *line, int row)
 	while (col < wolf3d->cols)
 	{
 		wolf3d->map[col][row] = ft_atoi(ptr);
-		if (!((wolf3d->map[col][row] >= -1 && wolf3d->map[col][row] <= 5) || (wolf3d->map[col][row] >= 91 && wolf3d->map[col][row] <= 99)  ))
+		if (!((wolf3d->map[col][row] >= -5 && wolf3d->map[col][row] <= 5) || (wolf3d->map[col][row] >= 91 && wolf3d->map[col][row] <= 99)  ))
 			err_exit(wolf3d);
 		if ((col == 0 || col == wolf3d->cols - 1 || row == 0 || row == wolf3d->rows - 1) && wolf3d->map[col][row] <= 0)
 			err_exit(wolf3d);
