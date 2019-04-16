@@ -74,9 +74,9 @@ t_rgb get_rgb_from_texture(float col, float row, t_texture *texture, t_wolf3d *w
 		col *= -1;
 	if (row < 0)
 		row *= -1;
-	if (col > texture->len)
+	if (col >= texture->len)
 		col = texture->len - 1;
-	if (row > texture->len)
+	if (row >= texture->len)
 		row = texture->len - 1;
 
 	if (wolf3d->filtr)
