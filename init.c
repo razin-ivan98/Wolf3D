@@ -64,24 +64,20 @@ void graphics_init(t_wolf3d *wolf3d)
 		wolf3d->doors[i].file_name = (char *)ft_memalloc(24);
 		i++;
 	}
-	//wolf3d->textures = (t_texture *)ft_memalloc(sizeof(t_texture) * 10);
 
 	player_init(wolf3d);
 }
 
 void wolf3d_init(t_wolf3d *wolf3d, char *file_name)
 {
-
-	
-	//wolf3d->hd = 1;
-	//wolf3d->walls_mode = 0;
 	wolf3d->door = 0;
 	wolf3d->tex_size = (wolf3d->hd ? 1024 : 32);
 	if (!wolf3d->win_ptr)
 		graphics_init(wolf3d);
-	//player_init(wolf3d);
 	textures_load(wolf3d);
 	read_map_from_file(wolf3d, file_name);
+	if (wolf3d->player.pos_x < 1.5 || wolf3d->player.pos_y < 1.5 || wolf3d->player.pos_x > (float)wolf3d->cols - 1.5 || wolf3d->player.pos_y > (float)wolf3d->rows - 1.5 || get_tile(wolf3d->player.pos_x, wolf3d->player.pos_y, wolf3d) > 0)
+		err_exit(wolf3d);
 	init_minimap(wolf3d);
 
 

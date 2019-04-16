@@ -3,9 +3,9 @@
 int key_pressed(int key, t_wolf3d *wolf3d)
 {
 
-
 	if (key == 0x35 || key == 0xff1b)
 	{
+		
 		exit_full(wolf3d);
 	}
 
@@ -52,4 +52,5 @@ int key_pressed(int key, t_wolf3d *wolf3d)
 
 
 	provider(wolf3d);
+	return (0);
 }

@@ -7,14 +7,30 @@ void menu_image_init(t_wolf3d *wolf3d)
 	int bytes;
 
 	bytes = 8;
-	len = 300;
+	len = 0;
 	endian = 0;
 
-	wolf3d->menu_win_ptr = mlx_new_window(wolf3d->mlx_ptr, 300, 500, "Wolf3d");
+	wolf3d->menu_win_ptr = mlx_new_window(wolf3d->mlx_ptr, 400, 400, "Wolf3d");
 
-	wolf3d->menu.image = mlx_new_image(wolf3d->mlx_ptr, 300, 500);
+	wolf3d->menu.image = mlx_new_image(wolf3d->mlx_ptr, 400, 400);
 	wolf3d->menu.image_data = mlx_get_data_addr(wolf3d->menu.image, &bytes, &len, &endian);
-	wolf3d->menu.len = 300;
+	wolf3d->menu.len = 400;
+
+	int i;
+	int j;
+
+
+	i = 0;
+	while (i < 400)
+	{
+		j = 0;
+		while (j < 400)
+		{
+			put_point_to_image(&wolf3d->menu, i, j, color_to_rgb(0xFFFF00));
+			j++;
+		}
+		i++;
+	}
 
 }
 
@@ -57,32 +73,14 @@ int menu_key_pressed(int key, t_wolf3d *wolf3d)
 			exit_full(wolf3d);
 		}
 	}
-
-	/*
-	wolf3d->hd = 1024;
-	mlx_destroy_window(wolf3d->mlx_ptr, wolf3d->menu_win_ptr);
-	run_game(wolf3d);*/
 	menu_provider(wolf3d);
+	return (0);
 }
 
 
 void menu_provider(t_wolf3d *wolf3d)
 {
-	int i;
-	int j;
 
-
-	i = 0;
-	while (i < 300)
-	{
-		j = 0;
-		while (j < 500)
-		{
-			put_point_to_image(&wolf3d->menu, i, j, color_to_rgb(0xFFFF00));
-			j++;
-		}
-		i++;
-	}
 
 
 

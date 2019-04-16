@@ -12,7 +12,6 @@
 
 # define CW 640
 # define CH  480
-//# define TEX_SIZE 32
 # define FOV M_PI/3
 # define FOV_DIV_2 FOV / 2
 
@@ -34,16 +33,7 @@ typedef enum
 	metal,
 	wood
 }		textures;
-/*
-typedef struct s_wall_col
-{
-	int compas;
-	int height;
-	float angle;
-	int type;
-	float distance;
-}			t_wall_col;
-*/
+
 typedef struct s_texture
 {
 	void *image;
