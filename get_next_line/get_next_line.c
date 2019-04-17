@@ -5,98 +5,155 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/10 06:30:59 by chorange          #+#    #+#             */
-/*   Updated: 2019/02/21 17:44:46 by chorange         ###   ########.fr       */
+/*   Created: 2019/04/17 18:27:42 by chorange          #+#    #+#             */
+/*   Updated: 2019/04/17 18:27:43 by chorange         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_file	*check_file_list(int fd, t_file **file)
+/*
+** return element with equal fd or create new, if it is missing
+*/
+
+static t_list	*get_struct(t_list **file, int fd)
 {
-	t_file	*tmp;
+	t_list	*tmp;
 
 	tmp = *file;
 	while (tmp)
 	{
-		if (tmp->fd == fd)
+		if ((int)tmp->content_size == fd)
 			return (tmp);
 		tmp = tmp->next;
 	}
-	if (!(tmp = (t_file *)malloc(sizeof(t_file))))
-		return (NULL);
-	tmp->fd = fd;
-	tmp->reserv[0] = 0;
-	tmp->next = NULL;
-	if (*file == NULL)
-		*file = tmp;
-	else
-	{
-		tmp->next = *file;
-		*file = tmp;
-	}
-	tmp = *file;
-	return (tmp);
+	tmp = ft_lstnew("\0", fd);
+	ft_lstadd(file, tmp);
+	*file = tmp;
+	return (*file);
 }
 
-int		remallocjoin(char **dst, char *src)
+/*
+** ft_strplus - create fresh string with size = old_size + add
+*/
+
+static int		ft_strplus(char **str, size_t add)
 {
 	char	*tmp;
+	size_t	len;
 
-	MALLCHECK((tmp = (char *)malloc(ft_strlen(*dst) + 1)));
-	ft_strcpy(tmp, *dst);
-	free(*dst);
-	*dst = NULL;
-	MALLCHECK((*dst = (char *)malloc(ft_strlen(tmp) + ft_strlen(src) + 1)));
-	ft_strcpy(*dst, tmp);
-	ft_strcat(*dst, src);
-	free(tmp);
-	return (0);
+	tmp = ft_strdup(*str);
+	len = ft_strlen(tmp);
+	free(*str);
+	*str = ft_strnew(len + add);
+	ft_strncpy(*str, tmp, len);
+	ft_strdel(&tmp);
+	return (1);
 }
 
-int		cycle_body(char *buf, t_file *file, int *read_chars, char **line)
+/*
+** copy_to_chr -	add read the characters in destination
+**					until we find the value of c
+** 70-73 search c-char in src
+** 79-80 add every character in destination
+*/
+
+static int		copy_to_chr(char **dst, char **src, char c)
 {
-	if (file->reserv[0])
+	int		i;
+	int		count;
+	int		pos;
+	char	*tmp;
+
+	i = -1;
+	tmp = *src;
+	count = 0;
+	while (tmp[++i])
+		if (tmp[i] == c)
+			break ;
+	pos = i;
+	if (!(*dst = ft_strnew(i + 1)))
+		return (0);
+	while (tmp[count] && count < i)
 	{
-		ft_strcpy(buf, file->reserv);
-		file->reserv[0] = 0;
+		ft_strncat(*dst, tmp + count, 1);
+		count++;
 	}
-	else
-	{
-		*read_chars = read(file->fd, buf, BUFF_SIZE);
-		if (*read_chars == 0)
-			return ((*line[0]) ? 1 : 0);
-		buf[*read_chars] = '\0';
-	}
-	if (ft_strchr(buf, '\n'))
-	{
-		ft_strcpy(file->reserv, ft_strchr(buf, '\n') + 1);
-		*(ft_strchr(buf, '\n')) = '\0';
-		if (remallocjoin(line, buf) == -1)
-			return (-1);
-		return (1);
-	}
-	else if (remallocjoin(line, buf) == -1)
-		return (-1);
-	return (2);
+	return (pos);
 }
 
-int		get_next_line(int fd, char **line)
+/*
+** ft_strsupersub - analogue of ft_strsub, but delete input string
+*/
+
+char			*ft_strsupersub(char *s, unsigned int start, size_t len)
 {
-	static t_file	*file;
-	t_file			*curr;
+	char	*str;
+	int		i;
+	char	*s_for_del;
+
+	if (s == NULL || start > ft_strlen(s))
+		return (NULL);
+	if (!(str = (char*)malloc(len + 1)))
+		return (NULL);
+	s_for_del = s;
+	i = 0;
+	while (start != 0)
+	{
+		s++;
+		start--;
+	}
+	while (len != '\0')
+	{
+		*(str + i) = *s;
+		i++;
+		s++;
+		len--;
+	}
+	free(s_for_del);
+	*(str + i) = '\0';
+	return (str);
+}
+
+/*
+** get_next_line -	reads from a file one line in line
+**					return 1 if line is read successfully
+** 					return 0 if reading complete
+**					return -1 if error
+**	142: check input
+**	143: obtain a structure with handle
+**	144-150: until we don't find \n, continue reading
+**	152: if we have reached end of file we exit of function
+**	154: coping line in line
+**	155-159:: if we wrote in line last characters, clear content in current
+**		 structure
+*/
+
+int				get_next_line(const int fd, char **line)
+{
 	char			buf[BUFF_SIZE + 1];
-	int				read_chars;
-	int				returned;
+	static t_list	*fd_lst;
+	t_list			*curr;
+	int				read_bytes;
+	int				i;
 
-	ERRCHECK(fd, line, read(fd, buf, 0));
-	MALLCHECK(((*line) = (char *)malloc(1)));
-	(*line)[0] = 0;
-	MALLCHECK((curr = check_file_list(fd, &file)));
-	while (1)
+	VAL_FILE(fd, line, read(fd, buf, 0));
+	curr = get_struct(&fd_lst, fd);
+	while ((read_bytes = read(fd, buf, BUFF_SIZE)))
 	{
-		returned = cycle_body(buf, curr, &read_chars, line);
-		if (returned != 2)
-			return (returned);
+		buf[read_bytes] = '\0';
+		MALL_CHECK(ft_strplus((char**)(&curr->content), read_bytes));
+		ft_strncat((char*)curr->content, buf, read_bytes);
+		if (ft_strchr(buf, '\n'))
+			break ;
 	}
+	if (read_bytes < BUFF_SIZE && !ft_strlen((char*)curr->content))
+		return (0);
+	i = copy_to_chr(line, (char**)&curr->content, '\n');
+	if (i < (int)ft_strlen(curr->content))
+		curr->content = ft_strsupersub(curr->content, i + 1,
+							ft_strlen(&curr->content[i + 1] - 1));
+	else
+		ft_strclr(curr->content);
+	return (1);
 }

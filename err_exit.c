@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   err_exit.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/17 13:48:44 by cocummin          #+#    #+#             */
+/*   Updated: 2019/04/17 15:46:21 by chorange         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
-
-void free_map(t_wolf3d *wolf3d)
+void	free_map(t_wolf3d *wolf3d)
 {
 	int i;
 
@@ -18,12 +29,11 @@ void free_map(t_wolf3d *wolf3d)
 		ft_memdel((void **)&wolf3d->map);
 }
 
-void free_doors(t_wolf3d *wolf3d)
+void	free_doors(t_wolf3d *wolf3d)
 {
 	int i;
 
 	i = 0;
-	
 	while (i < 10)
 	{
 		if (wolf3d->doors[i].file_name)
@@ -32,7 +42,7 @@ void free_doors(t_wolf3d *wolf3d)
 	}
 }
 
-void free_textures(t_wolf3d *wolf3d)
+void	free_textures(t_wolf3d *wolf3d)
 {
 	int i;
 
@@ -51,12 +61,12 @@ void free_textures(t_wolf3d *wolf3d)
 		mlx_destroy_image(wolf3d->mlx_ptr, wolf3d->menu.image);
 	if (wolf3d->image.image)
 		mlx_destroy_image(wolf3d->mlx_ptr, wolf3d->image.image);
-
 }
 
-
-int exit_full(t_wolf3d *wolf3d)
+int		exit_full(t_wolf3d *wolf3d)
 {
+	system("sh scripts/stop_back.sh &");
+	system("sh scripts/stop_step.sh &");
 	if (wolf3d->line)
 		ft_strdel(&wolf3d->line);
 	free_map(wolf3d);
@@ -69,7 +79,7 @@ int exit_full(t_wolf3d *wolf3d)
 	exit(1);
 }
 
-void err_exit(t_wolf3d *wolf3d)
+void	err_exit(t_wolf3d *wolf3d)
 {
 	ft_putendl("error");
 	exit_full(wolf3d);

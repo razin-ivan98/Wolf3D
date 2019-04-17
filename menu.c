@@ -1,25 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   menu.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cocummin <cocummin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/17 13:59:50 by cocummin          #+#    #+#             */
+/*   Updated: 2019/04/17 14:15:35 by cocummin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
-void menu_image_init(t_wolf3d *wolf3d)
+void			menu_image_init(t_wolf3d *wolf3d)
 {
 	int len;
 	int endian;
 	int bytes;
+	int i;
+	int j;
 
 	bytes = 8;
 	len = 0;
 	endian = 0;
-
 	wolf3d->menu_win_ptr = mlx_new_window(wolf3d->mlx_ptr, 400, 400, "Wolf3d");
-
 	wolf3d->menu.image = mlx_new_image(wolf3d->mlx_ptr, 400, 400);
-	wolf3d->menu.image_data = mlx_get_data_addr(wolf3d->menu.image, &bytes, &len, &endian);
+	wolf3d->menu.image_data = mlx_get_data_addr(wolf3d->menu.image,
+	&bytes, &len, &endian);
 	wolf3d->menu.len = 400;
-
-	int i;
-	int j;
-
-
 	i = 0;
 	while (i < 400)
 	{
@@ -31,28 +39,11 @@ void menu_image_init(t_wolf3d *wolf3d)
 		}
 		i++;
 	}
-
 }
 
-
-int menu_key_pressed(int key, t_wolf3d *wolf3d)
+static void		another_key(int key, t_wolf3d *wolf3d)
 {
-	if (key == 0x35)
-	{
-		exit(1);
-	}
-	else if (key ==0x07E  || key == 0xff52)
-	{
-		if (wolf3d->menu_selected > 0)
-			wolf3d->menu_selected--;
-	}
-	else if (key ==0x07D || key == 0xff54)
-	{
-		if (wolf3d->menu_selected < 5)
-			wolf3d->menu_selected++;
-	}
-
-	else if (key == 0x24 || key == 0xff0d)
+	if (key == 0x24 || key == 0xff0d)
 	{
 		if (wolf3d->menu_selected == 0)
 			wolf3d->hd = wolf3d->hd ? 0 : 1;
@@ -73,61 +64,40 @@ int menu_key_pressed(int key, t_wolf3d *wolf3d)
 			exit_full(wolf3d);
 		}
 	}
+}
+
+int				menu_key_pressed(int key, t_wolf3d *wolf3d)
+{
+	if (key == 0x35)
+	{
+		exit(1);
+	}
+	else if (key == 0x07E || key == 0xff52)
+	{
+		if (wolf3d->menu_selected > 0)
+			wolf3d->menu_selected--;
+	}
+	else if (key == 0x07D || key == 0xff54)
+	{
+		if (wolf3d->menu_selected < 5)
+			wolf3d->menu_selected++;
+	}
+	else
+		another_key(key, wolf3d);
 	menu_provider(wolf3d);
 	return (0);
 }
 
-
-void menu_provider(t_wolf3d *wolf3d)
+void			menu_init(t_wolf3d *wolf3d)
 {
-
-
-
-
-
-	mlx_put_image_to_window(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, wolf3d->menu.image, 0, 0);
-
-	mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 120, 20, 0x555500, "Wolf3D");
-	if (wolf3d->hd)
-		mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 50, wolf3d->menu_selected == 0 ? 0xFF0000 : 0x555500, "HD textures enable");
-	else
-		mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 50, wolf3d->menu_selected == 0 ? 0xFF0000 : 0x555500, "HD textures disable");
-
-	if (wolf3d->walls_mode)
-		mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 80, wolf3d->menu_selected == 1 ? 0xFF0000 : 0x555500, "compas textures enable");
-	else
-		mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 80, wolf3d->menu_selected == 1 ? 0xFF0000 : 0x555500, "compas textures disable");
-	if (wolf3d->light)
-		mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 110, wolf3d->menu_selected == 2 ? 0xFF0000 : 0x555500, "light mode enable");
-	else
-		mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 110, wolf3d->menu_selected == 2 ? 0xFF0000 : 0x555500, "light mode disable");
-	if (wolf3d->filtr)
-		mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 140, wolf3d->menu_selected == 3 ? 0xFF0000 : 0x555500, "bilinear filtration enable");
-	else
-		mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 140, wolf3d->menu_selected == 3 ? 0xFF0000 : 0x555500, "bilinear filtration disable");
-
-
-	mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 170, wolf3d->menu_selected == 4 ? 0xFF0000 : 0x555500, "Play");
-	mlx_string_put(wolf3d->mlx_ptr, wolf3d->menu_win_ptr, 60, 200, wolf3d->menu_selected == 5 ? 0xFF0000 : 0x555500, "Exit");
-
-}
-
-void menu_init(t_wolf3d *wolf3d)
-{
-
-
 	wolf3d->hd = 0;
 	wolf3d->light = 0;
 	wolf3d->walls_mode = 0;
 	wolf3d->filtr = 0;
 	wolf3d->menu_selected = 0;
 	menu_image_init(wolf3d);
-
-
-
 	menu_provider(wolf3d);
 	mlx_hook(wolf3d->menu_win_ptr, 2, 1L << 0, menu_key_pressed, wolf3d);
 	mlx_hook(wolf3d->menu_win_ptr, 17, 1L << 0, exit_full, NULL);
 	mlx_loop(wolf3d->mlx_ptr);
-
 }

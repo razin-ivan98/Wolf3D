@@ -1,0 +1,1 @@
+kill $(ps axu | grep play_step.sh | cut -d' '  -f 10) > /dev/null 2> /dev/null

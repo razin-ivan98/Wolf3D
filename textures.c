@@ -1,74 +1,92 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   textures.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chorange <chorange@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/17 14:53:30 by cocummin          #+#    #+#             */
+/*   Updated: 2019/04/17 17:57:46 by chorange         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
-
-int bilinear_filtration(float u, float v, t_texture *texture, int c)
+t_texture		*get_true_texture(t_wolf3d *wolf3d, int type)
 {
-	int i1;
-	int i2;
-	int i3;
-	int i4;
-
-	char *ptr;
-
-	ptr = texture->image_data;
-
-	int x = floor(u);
-	int y = floor(v);
-
-	i1 = texture->len * y * 4 + x * 4;
-	i2 = texture->len * y * 4 + ((x == texture->len - 1) ? 0 : (x + 1)) * 4;
-	i3 = texture->len * ((y == texture->len - 1) ? 0 : (y + 1)) * 4 + x * 4;
-	i4 = texture->len * ((y == texture->len - 1) ? 0 : (y + 1)) * 4 + ((x == texture->len - 1) ? 0 : (x + 1)) * 4;
-
-
-	//if (x == texture->len)
-
-	int c1 = ptr[i1 + c];
-	//if (c1 > 255)
-	//	c1 = 255;
-	if (c1 < 0)
-		c1 += 255;
-	int c2 = ptr[i2 + c];
-	//if (c2 > 255)
-	//	c2 = 255;
-	if (c2 < 0)
-		c2 += 255;
-	int c3 = ptr[i3 + c];
-	//if (c3 > 255)
-	//	c3 = 255;
-	if (c3 < 0)
-		c3 += 255;
-	int c4 = ptr[i4 + c];
-	//if (c4 > 255)
-	//	c4 = 255;
-	if (c4 < 0)
-		c4 += 255;
-
-
-	//u *= tex.size;
-	//v *= tex.size;
-	
-	double u_ratio = u - x;
-	double v_ratio = v - y;
-	double u_opposite = 1 - u_ratio;
-	double v_opposite = 1 - v_ratio;
-	int result = (int)((c1   * u_opposite  + c2   * u_ratio) * v_opposite + 
-                   (c3 * u_opposite  + c4 * u_ratio) * v_ratio);
-
-	//if (result < 0)
-	//	result *= -1;
-	//if (result > 255)
-	//	result = 255;
-
-	return (result);
+	if (!type)
+		type = wolf3d->curr_cast.type;
+	if (wolf3d->walls_mode && type > 0 && type < 9)
+		return (&wolf3d->textures[wolf3d->curr_cast.compas]);
+	else if (!wolf3d->walls_mode && type > 0 && type < 9)
+		return (&wolf3d->textures[type - 1]);
+	else if (type < 0)
+		return (&wolf3d->textures[-type - 1]);
+	else if (type > 8)
+		return (&wolf3d->textures[9]);
+	return (NULL);
 }
 
-
-
-t_rgb get_rgb_from_texture(float col, float row, t_texture *texture, t_wolf3d *wolf3d)
+static void		bilinear_filtration_2(t_bilinear *bi, float u, float v, int c)
 {
+	if (bi->c3 < 0)
+		bi->c3 += 255;
+	bi->c4 = bi->ptr[bi->i4 + c];
+	if (bi->c4 < 0)
+		bi->c4 += 255;
+	bi->u_ratio = u - bi->x;
+	bi->v_ratio = v - bi->y;
+	bi->u_opposite = 1 - bi->u_ratio;
+	bi->v_opposite = 1 - bi->v_ratio;
+	bi->result = (int)((bi->c1 * bi->u_opposite + bi->c2 * bi->u_ratio) *
+	bi->v_opposite +
+	(bi->c3 * bi->u_opposite + bi->c4 * bi->u_ratio) * bi->v_ratio);
+}
+
+int				bilinear_filtration(float u, float v, t_texture *texture, int c)
+{
+	t_bilinear bi;
+
+	bi.ptr = texture->image_data;
+	bi.x = floor(u);
+	bi.y = floor(v);
+	bi.i1 = texture->len * bi.y * 4 + bi.x * 4;
+	bi.i2 = texture->len * bi.y * 4 +
+	((bi.x == texture->len - 1) ? 0 : (bi.x + 1)) * 4;
+	bi.i3 = texture->len * ((bi.y == texture->len - 1) ?
+	0 : (bi.y + 1)) * 4 + bi.x * 4;
+	bi.i4 = texture->len * ((bi.y == texture->len - 1) ?
+	0 : (bi.y + 1)) * 4 + ((bi.x == texture->len - 1) ? 0 : (bi.x + 1)) * 4;
+	bi.c1 = bi.ptr[bi.i1 + c];
+	if (bi.c1 < 0)
+		bi.c1 += 255;
+	bi.c2 = bi.ptr[bi.i2 + c];
+	if (bi.c2 < 0)
+		bi.c2 += 255;
+	bi.c3 = bi.ptr[bi.i3 + c];
+	bilinear_filtration_2(&bi, u, v, c);
+	return (bi.result);
+}
+
+static void		get_rgb_from_texture_2(t_rgb *rgb,
+t_texture *texture, float col, float row)
+{
+	int c;
+	int r;
 	int index;
-	t_rgb rgb;
+
+	c = (int)col;
+	r = (int)row;
+	index = texture->len * r * 4 + c * 4;
+	rgb->r = texture->image_data[index + 2];
+	rgb->g = texture->image_data[index + 1];
+	rgb->b = texture->image_data[index];
+}
+
+t_rgb			get_rgb_from_texture(float col, float row,
+t_texture *texture, t_wolf3d *wolf3d)
+{
+	t_rgb	rgb;
 
 	if (col < 0)
 		col *= -1;
@@ -78,7 +96,6 @@ t_rgb get_rgb_from_texture(float col, float row, t_texture *texture, t_wolf3d *w
 		col = texture->len - 1;
 	if (row >= texture->len)
 		row = texture->len - 1;
-
 	if (wolf3d->filtr)
 	{
 		rgb.r = bilinear_filtration(col, row, texture, 2);
@@ -86,14 +103,6 @@ t_rgb get_rgb_from_texture(float col, float row, t_texture *texture, t_wolf3d *w
 		rgb.b = bilinear_filtration(col, row, texture, 0);
 	}
 	else
-	{
-		int c =(int)col;
-		int r = (int)row;
-		index = texture->len * r * 4 + c * 4;
-
-		rgb.r = texture->image_data[index + 2];
-		rgb.g = texture->image_data[index + 1];
-		rgb.b = texture->image_data[index];
-	}
-	return(rgb);
+		get_rgb_from_texture_2(&rgb, texture, col, row);
+	return (rgb);
 }
